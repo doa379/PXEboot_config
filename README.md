@@ -133,4 +133,4 @@ server$ sudo ufw allow from <LAN> to any port 69 proto udp
 server$ sudo ufw enable && sudo ufw reload
 ```
 On the sever you will want to redirect gateway traffic to eth0 so that the
-client has access to it..
+client has access to it.
