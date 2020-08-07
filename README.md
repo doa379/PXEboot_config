@@ -89,7 +89,7 @@ TIMEOUT 0
 Finally we also symlink the appropriate vmlinuz-*-*amd64 to vmlinuz-amd64 and
 initrd.img-amd64 to initrd.img in the /boot directory.
 
-# Configure Dnsmaq
+# Configure Dnsmasq
 ```
 ###### /etc/dnsmasq.d/client.conf
 ###### DNSMASQ config for local PXE server
