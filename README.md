@@ -24,7 +24,7 @@ server$ sudo cp /etc/apt/sources.list /srv/client/etc/apt
 server$ sudo cp /etc/network/interfaces /srv/client/etc/network
 server$ sudo chroot /srv/client
 server$ echo "client" > /etc/hostname
-server$ apt install console-setup console-data keyboard-configuration locales locales-all tzdata ssh sudo net-tool nfs-common ufw
+server$ apt install console-setup console-data keyboard-configuration locales locales-all tzdata ssh sudo net-tools nfs-common ufw
 server$ dpkg-reconfigure console-setup console-data keyboard-configuration locales tzdata
 server$ adduser 'user'
 server$ usermod -aG sudo 'user'
@@ -87,7 +87,7 @@ PROMPT 0
 TIMEOUT 0
 ```
 Finally we also symlink the appropriate vmlinuz-*-*amd64 to vmlinuz-amd64 and
-initrd.img-*-*amd64 to initrd.img in the /boot directory.
+initrd.img-amd64 to initrd.img in the /boot directory.
 
 # Configure Dnsmaq
 ```
@@ -132,3 +132,5 @@ server$ sudo ufw allow from <LAN> to any port 69 proto tcp
 server$ sudo ufw allow from <LAN> to any port 69 proto udp
 server$ sudo ufw enable && sudo ufw reload
 ```
+On the sever you will want to redirect gateway traffic to eth0 so that the
+client has access to it..
