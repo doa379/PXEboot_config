@@ -7,7 +7,9 @@ system and directories will be stored locally and then exported over the LAN via
 NFS. We refer to every machine that connects to the server as a client.  Begin
 by installing:
 
+```
 server$ sudo apt install tftpd-hpa pxelinux syslinux dnsmasq nfs-kernel-server
+```
 
 # Basic client install config
 
@@ -29,7 +31,7 @@ server$ usermod -aG sudo 'user'
 
 Then we configure /etc/fstab on the client as follows.
 
-# /etc/fstab
+###### /etc/fstab
 /dev/nfs                        /            nfs   auto,nofail,noatime,nolock,hard,intr 0 0
 proc                            /proc        proc  defaults 0 0
 tmpfs                           /tmp         tmpfs nosuid,nodev 0 0
@@ -47,7 +49,7 @@ server - again exported over NFS (later).
 
 The basic config can be left alone as follows.
 
-# /etc/default/tftpd-hpa
+###### /etc/default/tftpd-hpa
 TFTP_USERNAME="tftp"
 TFTP_DIRECTORY="/srv/tftp"
 TFTP_ADDRESS="0.0.0.0:69"
@@ -66,7 +68,7 @@ server$ sudo mount -o bind /boot /srv/tftp/boot
 
 We can also set it in the server's /etc/fstab for convenience:
 
-# /etc/fstab
+###### /etc/fstab
 /boot  /srv/tftp/boot  none  defaults,bind   0 0
 
 In /srv/tftp/pxelinux.cfg we will have the following in a file named “default”.
@@ -76,7 +78,7 @@ called 01-AA-BB-CC-DD-EE-FF. This useful if there are multiple clients that will
 each need to boot with different configurations (such as their own individual
 root system).
 
-# /srv/tftp/pxelinux.cfg/default
+###### /srv/tftp/pxelinux.cfg/default
 DEFAULT linux
 LABEL linux
 KERNEL boot/vmlinuz-amd64
@@ -89,8 +91,8 @@ initrd.img-*-*amd64 to initrd.img in the /boot directory.
 
 # Configure Dnsmaq
 
-# /etc/dnsmasq.d/client.conf
-# DNSMASQ config for local PXE server
+###### /etc/dnsmasq.d/client.conf
+###### DNSMASQ config for local PXE server
 dhcp-boot=pxelinux.0
 interface=eth0               # Use interface
 listen-address=10.0.0.10     # Explicitly specify the address to listen on
@@ -109,7 +111,7 @@ server$ sudo ip ad add 10.0.0.10/24 dev eth0
 
 We set the following NFS exports.
 
-# /etc/exports
+###### /etc/exports
 /srv/client    10.0.0.0/24(rw,async,nohide,crossmnt,no_subtree_check,no_root_squash)
 /lib/modules   10.0.0.0/24(ro,async,nohide,crossmnt,no_subtree_check,no_root_squash)
 
@@ -119,7 +121,7 @@ We need to make sure port 69 on the server is open for TFTP. We need to make
 sure that ports 111, 2049, 33333 are open for NFS. In Debian we need to fix the
 rpcmountd port to 33333 because NFS will change it everytime.
 
-#/etc/default/nfs-kernel-server
+###### /etc/default/nfs-kernel-server
 RPCMOUNTDOPTS="--port 33333"
 
 server$ sudo ufw allow from <LAN> to any port 111
@@ -128,5 +130,3 @@ server$ sudo ufw allow from <LAN> to any port 33333
 server$ sudo ufw allow from <LAN> to any port 69 proto tcp
 server$ sudo ufw allow from <LAN> to any port 69 proto udp
 server$ sudo ufw enable && sudo ufw reload
-
-
